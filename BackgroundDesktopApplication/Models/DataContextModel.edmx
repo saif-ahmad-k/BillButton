@@ -1,0 +1,150 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="DataContextModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tblEmployee">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="FirstName" Type="varchar" MaxLength="50" />
+          <Property Name="LastName" Type="varchar" MaxLength="50" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblMatterCaseList">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="MatterName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="MatterIDPodio" Type="nvarchar(max)" />
+          <Property Name="MatterIDColio" Type="nvarchar(max)" />
+          <Property Name="MatterIDSlack" Type="nvarchar(max)" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblTrackTime">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="Date" Type="datetime" />
+          <Property Name="Note" Type="nvarchar(max)" />
+          <Property Name="Duration" Type="nvarchar(max)" />
+          <Property Name="MatterIDPodio" Type="nvarchar(max)" />
+          <Property Name="MatterIDColio" Type="nvarchar(max)" />
+          <Property Name="MatterIDSlack" Type="nvarchar(max)" />
+          <Property Name="MatterName" Type="nvarchar(max)" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="DataContextModelStoreContainer">
+          <EntitySet Name="tblEmployee" EntityType="Self.tblEmployee" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblMatterCaseList" EntityType="Self.tblMatterCaseList" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblTrackTime" EntityType="Self.tblTrackTime" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DataContextModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="tblMatterCaseList">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="MatterName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MatterIDPodio" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MatterIDColio" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MatterIDSlack" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="tblTrackTime">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Precision="3" />
+          <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Duration" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MatterIDPodio" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MatterIDColio" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MatterIDSlack" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MatterName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityContainer Name="DataContext" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tblMatterCaseLists" EntityType="Self.tblMatterCaseList" />
+          <EntitySet Name="tblTrackTimes" EntityType="Self.tblTrackTime" />
+          <EntitySet Name="tblEmployees" EntityType="DataContextModel.tblEmployee" />
+        </EntityContainer>
+        <EntityType Name="tblEmployee">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DataContextModelStoreContainer" CdmEntityContainer="DataContext">
+          <EntitySetMapping Name="tblMatterCaseLists">
+            <EntityTypeMapping TypeName="DataContextModel.tblMatterCaseList">
+              <MappingFragment StoreEntitySet="tblMatterCaseList">
+                <ScalarProperty Name="MatterName" ColumnName="MatterName" />
+                <ScalarProperty Name="MatterIDPodio" ColumnName="MatterIDPodio" />
+                <ScalarProperty Name="MatterIDColio" ColumnName="MatterIDColio" />
+                <ScalarProperty Name="MatterIDSlack" ColumnName="MatterIDSlack" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblTrackTimes">
+            <EntityTypeMapping TypeName="DataContextModel.tblTrackTime">
+              <MappingFragment StoreEntitySet="tblTrackTime">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Note" ColumnName="Note" />
+                <ScalarProperty Name="Duration" ColumnName="Duration" />
+                <ScalarProperty Name="MatterIDPodio" ColumnName="MatterIDPodio" />
+                <ScalarProperty Name="MatterIDColio" ColumnName="MatterIDColio" />
+                <ScalarProperty Name="MatterIDSlack" ColumnName="MatterIDSlack" />
+                <ScalarProperty Name="MatterName" ColumnName="MatterName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblEmployees">
+            <EntityTypeMapping TypeName="DataContextModel.tblEmployee">
+              <MappingFragment StoreEntitySet="tblEmployee">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
