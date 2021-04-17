@@ -16,14 +16,16 @@
             <ImageBrush ImageSource="/Images/background.jpg" Stretch="UniformToFill"/>
         </Grid.Background>
 
-        <TextBlock x:Name="tblock"></TextBlock>
+
         <Label Content="Matter : " HorizontalAlignment="Left" Margin="89,65,0,0" VerticalAlignment="Top" Height="30" Width="120" FontSize="18" FontWeight="SemiBold" FontFamily="Calibri" Foreground="#FFFFFBFB"/>
         <Label Content="Note : " HorizontalAlignment="Left" Margin="89,117,0,0" VerticalAlignment="Top" Height="30" Width="120" FontSize="18" FontWeight="SemiBold" FontFamily="Calibri" Foreground="#FFFFFBFB"/>
         <Label Content="Duration : " HorizontalAlignment="Left" Margin="89,190,0,0" VerticalAlignment="Top" Height="30" Width="120" FontSize="18" FontWeight="SemiBold" FontFamily="Calibri" Foreground="#FFFFFBFB"/>
         <Label Content="User : " HorizontalAlignment="Left" Margin="89,235,0,0" VerticalAlignment="Top" Height="30" Width="120" FontSize="18" FontWeight="SemiBold" FontFamily="Calibri" Foreground="#FFFFFBFB"/>
         <Label Content="Date : " HorizontalAlignment="Left" Margin="89,272,0,0" VerticalAlignment="Top" Height="30" Width="120" FontSize="18" FontWeight="SemiBold" FontFamily="Calibri" Foreground="#FFFFFBFB"/>
         <ComboBox Name="cmbMatter" DisplayMemberPath="MatterName" SelectedValue="Id" HorizontalAlignment="Left" VerticalAlignment="Top" Width="160" Margin="232,74,0,0" Height="30"/>
-        <TextBlock x:Name="txtNote" HorizontalAlignment="Left" Margin="232,117,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Height="50" Width="332" Background="#FFF3F2F2"/>
+        <!--<TextBlock  HorizontalAlignment="Left" Margin="232,117,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="50" Width="332" Background="#FFF3F2F2"/>-->
+        <TextBox x:Name="txtNote" HorizontalAlignment="Left" Height="46" TextWrapping="Wrap"  VerticalAlignment="Top" Width="301" Margin="232,125,0,0"/>
+
         <TextBox Name="txtDuration" HorizontalAlignment="Left" Height="30" Margin="232,190,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="160" Background="#FFF9F9F9"/>
         <ComboBox Name="cmbEmployee" DisplayMemberPath="FirstName" SelectedValue="UserId" HorizontalAlignment="Left" VerticalAlignment="Top" Width="160" Margin="232,237,0,0" Height="30"/>
         <DatePicker Name="datePickerForm" HorizontalAlignment="Left" Margin="232,281,0,0" VerticalAlignment="Top" Width="160" Height="30"/>

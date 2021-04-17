@@ -67,6 +67,7 @@ namespace BackgroundDesktopApplication
             cmbEmployee.ItemsSource = db.tblEmployees.ToList();
             cmbMatter.ItemsSource = null;
             cmbMatter.ItemsSource = db.tblMatterCaseLists.ToList();
+            datePickerForm.SelectedDate = DateTime.Today;
         }
         private IntPtr _windowHandle;
         private HwndSource _source;
@@ -121,69 +122,54 @@ namespace BackgroundDesktopApplication
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            MediaPlayer Sound1 = new MediaPlayer();
-            Sound1.Open(new Uri("mixkit-magical-coin-win-1936.wav", UriKind.Relative)); 
-            Sound1.Play();
+            try
+            {
+                MediaPlayer Sound1 = new MediaPlayer();
+                Sound1.Open(new Uri("mixkit-magical-coin-win-1936.wav", UriKind.Relative));
+                Sound1.Play();
 
-            tblTrackTime obj = new tblTrackTime();
-            obj.Date = datePickerForm.SelectedDate.Value.Date;
-            obj.Duration = txtDuration.Text;
-            obj.Note = txtNote.Text;
-            tblEmployee selectedEmployee = (tblEmployee)cmbEmployee.SelectedItem;
-            obj.UserID = selectedEmployee.UserId;
-            tblMatterCaseList selectedMatter = (tblMatterCaseList)cmbMatter.SelectedItem;
-            obj.MatterName = selectedMatter.MatterName;
-            obj.MatterIDColio = selectedMatter.MatterIDColio;
-            obj.MatterIDPodio = selectedMatter.MatterIDPodio;
-            obj.MatterIDSlack = selectedMatter.MatterIDSlack;
-            db.tblTrackTimes.Add(obj);
-            db.SaveChanges();
+                tblTrackTime obj = new tblTrackTime();
+                obj.Date = datePickerForm.SelectedDate.Value.Date;
+                obj.Duration = txtDuration.Text;
+                obj.Note = txtNote.Text;
+                tblEmployee selectedEmployee = (tblEmployee)cmbEmployee.SelectedItem;
+                obj.UserID = selectedEmployee.UserId;
+                tblMatterCaseList selectedMatter = (tblMatterCaseList)cmbMatter.SelectedItem;
+                obj.MatterName = selectedMatter.MatterName;
+                obj.MatterIDColio = selectedMatter.MatterIDColio;
+                obj.MatterIDPodio = selectedMatter.MatterIDPodio;
+                obj.MatterIDSlack = selectedMatter.MatterIDSlack;
+                db.tblTrackTimes.Add(obj);
+                db.SaveChanges();
 
+                var gsh = new GoogleSheetsHelper(gesturefile, "17cE64M4FnXGzGXHT-po0VtXkiMUU64kBQrrEB0Jr3vk");
 
-            var gsh = new GoogleSheetsHelper(gesturefile, "17cE64M4FnXGzGXHT-po0VtXkiMUU64kBQrrEB0Jr3vk");
+                var rows = new List<GoogleSheetRow>();
+                foreach (var track in db.tblTrackTimes.ToList())
+                {
+                    var emp = db.tblEmployees.Find(track.UserID);
+                    var newRow = new GoogleSheetRow();
+                    var matterNameCell = new GoogleSheetCell() { CellValue = track.MatterName };
+                    var userCell = new GoogleSheetCell() { CellValue = emp.FirstName };
+                    var UserIdPodioCell = new GoogleSheetCell() { CellValue = track.UserID.ToString() };
+                    var DateCell = new GoogleSheetCell() { CellValue = track.Date.Value.Date.ToString() };
+                    var NoteCell = new GoogleSheetCell() { CellValue = track.Note };
+                    var DurationCell = new GoogleSheetCell() { CellValue = track.Duration };
+                    var MatterIdPodioCell = new GoogleSheetCell() { CellValue = track.MatterIDPodio };
+                    var MatterIdClioCell = new GoogleSheetCell() { CellValue = track.MatterIDColio };
+                    var MatterIdSlackCell = new GoogleSheetCell() { CellValue = track.MatterIDSlack };
+                    newRow.Cells.AddRange(new List<GoogleSheetCell>() { matterNameCell, userCell, UserIdPodioCell, DateCell, NoteCell, DurationCell, MatterIdPodioCell, MatterIdClioCell, MatterIdSlackCell });
+                    rows.Add(newRow);
+                }
 
-            //var row1 = new GoogleSheetRow();
-            var row2 = new GoogleSheetRow();
+                gsh.AddCells(new GoogleSheetParameters() { SheetName = "Sheet1", RangeColumnStart = 1, RangeRowStart = 2 }, rows);
 
-            //var cell1 = new GoogleSheetCell() { CellValue = "Header 1", IsBold = true, BackgroundColor = System.Drawing.Color.DarkGoldenrod };
-            //var cell2 = new GoogleSheetCell() { CellValue = "Header 2", BackgroundColor = System.Drawing.Color.Cyan };
-
-            var matterNameCell = new GoogleSheetCell() { CellValue = selectedMatter.MatterName };
-            var userCell = new GoogleSheetCell() { CellValue = selectedEmployee.FirstName };
-            var UserIdPodioCell = new GoogleSheetCell() { CellValue = selectedEmployee.UserId.ToString() };
-            var DateCell = new GoogleSheetCell() { CellValue = datePickerForm.SelectedDate.Value.Date.ToString() };
-            var NoteCell = new GoogleSheetCell() { CellValue = txtNote.Text };
-            var DurationCell = new GoogleSheetCell() { CellValue = txtDuration.Text };
-            var MatterIdPodioCell = new GoogleSheetCell() { CellValue = selectedMatter.MatterIDPodio };
-            var MatterIdClioCell = new GoogleSheetCell() { CellValue = selectedMatter.MatterIDColio };
-            var MatterIdSlackCell = new GoogleSheetCell() { CellValue = selectedMatter.MatterIDSlack };
-            //row1.Cells.AddRange(new List<GoogleSheetCell>() { cell1, cell2 });
-            row2.Cells.AddRange(new List<GoogleSheetCell>() { matterNameCell, userCell, UserIdPodioCell, DateCell, NoteCell, DurationCell, MatterIdPodioCell, MatterIdClioCell, MatterIdSlackCell });
-
-            var rows = new List<GoogleSheetRow>() { row2 };
-
-            gsh.AddCells(new GoogleSheetParameters() { SheetName = "Sheet1", RangeColumnStart = 1, RangeRowStart = 2 }, rows);
+                MessageBox.Show("Sheet Updated");
+            }catch(Exception ex)
+            {
+                MessageBox.Show("Error! " + ex.Message);
+            }
             
-
-
-            //            String range = "Sheet1";
-            //string valueInputOption = "USER_ENTERED";
-
-            //// The new values to apply to the spreadsheet.
-            //List<Data.ValueRange> updateData = new List<Data.ValueRange>();
-            //var dataValueRange = new Data.ValueRange();
-            //dataValueRange.Range = range;
-            //dataValueRange.Values = data;
-            //updateData.Add(dataValueRange);
-
-            //Data.BatchUpdateValuesRequest requestBody = new Data.BatchUpdateValuesRequest();
-            //requestBody.ValueInputOption = valueInputOption;
-            //requestBody.Data = updateData;
-
-            //var request = _sheetsService.Spreadsheets.Values.BatchUpdate(requestBody, "17cE64M4FnXGzGXHT-po0VtXkiMUU64kBQrrEB0Jr3vk");
-
-            //Data.BatchUpdateValuesResponse response = request.Execute();
-
         }
         private void ReadGoogleSheet()
         {
