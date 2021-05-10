@@ -4,11 +4,14 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BackgroundDesktopApplication"
-        xmlns:tb="http://www.hardcodet.net/taskbar"
+        xmlns:tb="http://www.hardcodet.net/taskbar" 
+            xmlns:dotNetKitControls="clr-namespace:DotNetKit.Windows.Controls;assembly=DotNetKit.Wpf.AutoCompleteComboBox"
+
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+
         mc:Ignorable="d"
        
         Title="Bill Button - Desktop" Height="440" MinHeight="440"  Width="800" WindowStartupLocation="CenterScreen">
-
 
 
     <Grid >
@@ -22,7 +25,54 @@
         <Label Content="Duration : " HorizontalAlignment="Left" Margin="89,190,0,0" VerticalAlignment="Top" Height="30" Width="120" FontSize="18" FontWeight="SemiBold" FontFamily="Calibri" Foreground="#FFFFFBFB"/>
         <Label Content="User : " HorizontalAlignment="Left" Margin="89,235,0,0" VerticalAlignment="Top" Height="30" Width="120" FontSize="18" FontWeight="SemiBold" FontFamily="Calibri" Foreground="#FFFFFBFB"/>
         <Label Content="Date : " HorizontalAlignment="Left" Margin="89,272,0,0" VerticalAlignment="Top" Height="30" Width="120" FontSize="18" FontWeight="SemiBold" FontFamily="Calibri" Foreground="#FFFFFBFB"/>
-        <ComboBox Name="cmbMatter" DisplayMemberPath="MatterName" SelectedValue="Id" HorizontalAlignment="Left" VerticalAlignment="Top" Width="160" Margin="232,74,0,0" Height="30"/>
+        <dotNetKitControls:AutoCompleteComboBox
+            Name="searchcmb"
+    SelectedValuePath="Id"
+    TextSearch.TextPath="MatterName"
+    SelectedItem="{Binding MatterName}"
+            DisplayMemberPath="MatterName" Margin="232,65,259,314"
+                      Height="30"
+    />
+        <!--<StackPanel Orientation="Horizontal" 
+                VerticalAlignment="Top"
+                Margin="10 10">
+            <TextBlock Text="Select: " 
+                   Padding="4 3"/>
+            <local:FilteredComboBox 
+            x:Name="FilteredComboBox1" 
+            ItemsPanel="{DynamicResource ItemsTemplate}" 
+            Padding="4 3" 
+                DisplayMemberPath="MatterName"
+            MinWidth="200"/>
+        </StackPanel>-->
+        <!--<WrapPanel Orientation="Horizontal">
+            <ComboBox Name="cmbMatter"
+                                    
+                      IsEditable="True" 
+                      IsTextSearchEnabled="True" 
+                      TextSearch.TextPath="MatterName"
+                      DisplayMemberPath="MatterName"
+                      
+                       SelectedValue="{Binding IsActive, Mode=TwoWay}" 
+                      HorizontalAlignment="Left"
+                      VerticalAlignment="Top" 
+                      Width="250" Margin="232,74,0,0"
+                      Height="30" 
+                      SelectionChanged="cmbMatter_SelectionChanged" >
+                <ComboBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <VirtualizingStackPanel />
+                    </ItemsPanelTemplate>
+                </ComboBox.ItemsPanel>
+
+
+            </ComboBox>
+        </WrapPanel>-->
+
+
+
+
+
         <!--<TextBlock  HorizontalAlignment="Left" Margin="232,117,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="50" Width="332" Background="#FFF3F2F2"/>-->
         <TextBox x:Name="txtNote" HorizontalAlignment="Left" Height="46" TextWrapping="Wrap"  VerticalAlignment="Top" Width="301" Margin="232,125,0,0"/>
 
@@ -53,6 +103,9 @@
             </tb:TaskbarIcon.ContextMenu>
 
         </tb:TaskbarIcon>
+
+
+
     </Grid>
 
 </Window>

@@ -25,6 +25,8 @@ using BackgroundDesktopApplication.Models;
 using System.Threading;
 using Google.Apis.Util.Store;
 using System.Reflection;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 
 namespace BackgroundDesktopApplication
 {
@@ -33,6 +35,7 @@ namespace BackgroundDesktopApplication
     /// </summary>
     public partial class Window1 : Window
     {
+        
         DataContext db = new DataContext();
         static string[] Scopes = { SheetsService.Scope.SpreadsheetsReadonly };
         static string ApplicationName = "Google Sheets API .NET Quickstart";
@@ -56,21 +59,39 @@ namespace BackgroundDesktopApplication
         private const uint MOD_WIN = 0x0008; //WINDOWS
         //CAPS LOCK:
         private const uint VK_CAPITAL = 0x14;
+        public ObservableCollection<string> ItemList { get; set; }
+    
+
+        private IntPtr _windowHandle;
+        private HwndSource _source;
+        private bool cb;
         public Window1()
         {
-            
+
             InitializeComponent();
             RegistryKey reg = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
             reg.SetValue("backgroundApp", System.Reflection.Assembly.GetExecutingAssembly().Location.ToString());
             ReadGoogleSheet();
             cmbEmployee.ItemsSource = null;
             cmbEmployee.ItemsSource = db.tblEmployees.ToList();
-            cmbMatter.ItemsSource = null;
-            cmbMatter.ItemsSource = db.tblMatterCaseLists.ToList();
+            //cmbMatter.ItemsSource = null;
+            //cmbMatter.ItemsSource = db.tblMatterCaseLists.ToList();
+            //string text = cmbMatter.Text;
+            //if (text == null) { cmbMatter.ItemsSource = db.tblMatterCaseLists.Select(x=>x.MatterName).ToList(); }
+            //else { cmbMatter.ItemsSource = db.tblMatterCaseLists.Where(x=>x.MatterName.Contains(text)).ToList(); }
+            ;
+            searchcmb.ItemsSource = null;
+            searchcmb.ItemsSource = db.tblMatterCaseLists.ToList();
             datePickerForm.SelectedDate = DateTime.Today;
+
         }
-        private IntPtr _windowHandle;
-        private HwndSource _source;
+
+
+
+
+
+        public event PropertyChangedEventHandler PropertyChanged;
+       
         protected override void OnSourceInitialized(EventArgs e)
         {
             base.OnSourceInitialized(e);
@@ -122,6 +143,15 @@ namespace BackgroundDesktopApplication
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            //public void cmbMatter_SelectionChanged(object sender, Gui.Controls.AutoComplete.AutoCompleteArgs args)
+            //{
+                
+            //    //check
+            //    if (string.IsNullOrEmpty(args.Pattern))
+            //        args.CancelBinding = true;
+            //    else
+            //        args.DataSource = BackgroundDesktopApplication.GetMatter(args.Pattern);
+            //}
             try
             {
                 MediaPlayer Sound1 = new MediaPlayer();
@@ -134,7 +164,7 @@ namespace BackgroundDesktopApplication
                 obj.Note = txtNote.Text;
                 tblEmployee selectedEmployee = (tblEmployee)cmbEmployee.SelectedItem;
                 obj.UserID = selectedEmployee.UserId;
-                tblMatterCaseList selectedMatter = (tblMatterCaseList)cmbMatter.SelectedItem;
+                tblMatterCaseList selectedMatter = (tblMatterCaseList)searchcmb.SelectedItem;
                 obj.MatterName = selectedMatter.MatterName;
                 obj.MatterIDColio = selectedMatter.MatterIDColio;
                 obj.MatterIDPodio = selectedMatter.MatterIDPodio;
@@ -169,7 +199,14 @@ namespace BackgroundDesktopApplication
             {
                 MessageBox.Show("Error! " + ex.Message);
             }
-            
+
+            searchcmb.SelectedItem = null;
+            txtNote.Text = null;
+            txtDuration.Text = null;
+
+
+
+
         }
         private void ReadGoogleSheet()
         {
@@ -285,7 +322,61 @@ namespace BackgroundDesktopApplication
                 //}
                 //dc.SaveChanges();
             }
-            
+
         }
+
+
+        private void cmbMatter_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        //public partial class MainWindow : INotifyPropertyChanged
+        //{
+        //    private string _searchTextText;
+        //    private object cb;
+
+        //    //public MainWindow()
+        //    //{
+        //    //    ItemList = new ObservableCollection<string>();
+        //    //    for (var i = 0; i < 10; i++)
+        //    //    {
+        //    //        ItemList.Add($"Item {i}");
+        //    //    }
+                
+        //    //  // InitializeComponent();
+        //    //}
+
+        //    public event PropertyChangedEventHandler PropertyChanged;
+
+        //    //private void Cb_OnPreviewTextInput(object sender, TextCompositionEventArgs e)
+        //    //{
+        //    //    cb = true;
+        //    //}
+
+        //   // public ObservableCollection<string> ItemList { get; set; }
+
+        //    public string SearchTextText
+        //    {
+        //        get =>this. _searchTextText;
+        //        set
+        //        {
+        //            if (_searchTextText == value) return;
+        //           this._searchTextText = value;
+                    
+        //            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SearchTextText)));
+                   
+        //}
+        //    }
+        //}
+
+        //private void Cb_OnPreviewTextInput(object sender, TextCompositionEventArgs e)
+        //{
+        //    cb = true;
+        //}
+
+        //public event PropertyChangedEventHandler PropertyChanged;
     }
+
 }
+
